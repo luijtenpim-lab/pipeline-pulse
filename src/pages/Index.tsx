@@ -1,16 +1,45 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { DashboardLayout } from "@/components/DashboardLayout";
+import { DashboardFilters } from "@/components/DashboardFilters";
+import { KPICards } from "@/components/KPICards";
+import { InterviewsChart } from "@/components/InterviewsChart";
+import { OpenPositionsTable } from "@/components/OpenPositionsTable";
+import { RecentActivity } from "@/components/RecentActivity";
+import { AIChatbot } from "@/components/AIChatbot";
+import { getMetrics, getInterviewStats, positions, decisions } from "@/data/mockData";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  const metrics = getMetrics();
+  const interviewStats = getInterviewStats();
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
-    </div>
+    <DashboardLayout>
+      <div className="space-y-6 max-w-7xl">
+        <DashboardFilters />
+
+        <KPICards
+          successRate={metrics.successRate}
+          totalApplicants={metrics.totalApplicants}
+          openPositions={metrics.openPositions}
+          offersMade={metrics.offersMade}
+        />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <InterviewsChart
+            unscheduled={interviewStats.unscheduled}
+            scheduled={interviewStats.scheduled}
+            pendingReview={interviewStats.pendingReview}
+            completed={interviewStats.completed}
+            total={interviewStats.total}
+          />
+          <OpenPositionsTable positions={positions} />
+        </div>
+
+        <RecentActivity decisions={decisions} />
+      </div>
+
+      <AIChatbot />
+    </DashboardLayout>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
